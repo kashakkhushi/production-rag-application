@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+.next/
+out/
+build/
+dist/
+.npm/
+
+# Environment
+.env
+
+# Chroma DB
+chroma_db/
+backend/chroma_db/
+
+# SQLite
+*.db
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

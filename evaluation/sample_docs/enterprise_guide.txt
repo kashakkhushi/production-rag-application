@@ -1,0 +1,10 @@
+Enterprise Architecture Guidelines 2026
+
+1. Authentication Standard
+All internal microservices must use OAuth 2.0 with JWT (JSON Web Tokens) for service-to-service authentication. The token expiration must not exceed 15 minutes. Long-lived sessions require refresh tokens stored securely in Redis.
+
+2. Database Provisioning
+PostgreSQL is the default relational database for all new transactional services. MongoDB is restricted to logging, telemetry, and unstructured document storage. All database migrations must be managed via Alembic or Flyway.
+
+3. Deployment Strategy
+We use a Blue-Green deployment strategy for zero-downtime releases. The primary Kubernetes cluster is hosted in us-east-1. Services must be containerized using Docker, and the base image must be Alpine Linux to minimize attack surface.

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rag_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CHROMA_DB_PATH=/app/data/chroma
+      - SQLITE_DB_PATH=/app/data/metadata.db
+      - CHUNK_SIZE=${CHUNK_SIZE:-500}
+      - CHUNK_OVERLAP=${CHUNK_OVERLAP:-100}
+      - DENSE_WEIGHT=${DENSE_WEIGHT:-0.6}
+      - SPARSE_WEIGHT=${SPARSE_WEIGHT:-0.4}
+      - TOP_K=${TOP_K:-20}
+      - RERANK_TOP_K=${RERANK_TOP_K:-5}
+      - MIN_RELEVANCE_THRESHOLD=${MIN_RELEVANCE_THRESHOLD:-0.3}
+    volumes:
+      - rag_data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rag_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  rag_data:
+    name: rag_data
